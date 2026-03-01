@@ -13,6 +13,7 @@ DEFAULT_ENTITY_CONFIG = {
     "expose": True,
     "aliases": [],
     "name": None,
+    "room": None,
 }
 
 CONFIG_SNIPPET = """google_assistant:

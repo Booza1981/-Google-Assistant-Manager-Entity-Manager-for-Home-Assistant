@@ -48,7 +48,7 @@ class GoogleAssistantManagerPanel extends LitElementBase {
       }
       .row {
         display: grid;
-        grid-template-columns: minmax(220px, 1fr) 90px minmax(180px, 1fr) minmax(180px, 1fr);
+        grid-template-columns: minmax(220px, 1fr) 90px minmax(200px, 1fr) minmax(170px, 1fr) minmax(150px, 1fr);
         gap: 10px;
         align-items: center;
         padding: 8px 0;
@@ -143,6 +143,7 @@ class GoogleAssistantManagerPanel extends LitElementBase {
       expose: !!entity.expose,
       aliases: Array.isArray(entity.aliases) ? [...entity.aliases] : [],
       name: entity.name || "",
+      room: entity.room || "",
     };
   }
 
@@ -157,6 +158,7 @@ class GoogleAssistantManagerPanel extends LitElementBase {
       ...draft,
       aliases: Array.isArray(draft.aliases) ? draft.aliases : base.aliases,
       name: typeof draft.name === "string" ? draft.name : base.name,
+      room: typeof draft.room === "string" ? draft.room : base.room,
     };
   }
 
@@ -177,7 +179,12 @@ class GoogleAssistantManagerPanel extends LitElementBase {
 
     const original = this._toDraft(entity);
     const aliasesEqual = JSON.stringify(original.aliases) === JSON.stringify(draft.aliases);
-    return original.expose !== draft.expose || original.name !== draft.name || !aliasesEqual;
+    return (
+      original.expose !== draft.expose ||
+      original.name !== draft.name ||
+      original.room !== draft.room ||
+      !aliasesEqual
+    );
   }
 
   _dirtyEntities() {
@@ -252,6 +259,7 @@ class GoogleAssistantManagerPanel extends LitElementBase {
           expose: !!draft.expose,
           aliases: Array.isArray(draft.aliases) ? draft.aliases : [],
           name: draft.name || null,
+          room: draft.room || null,
           reload: false,
         });
       }
@@ -361,6 +369,15 @@ class GoogleAssistantManagerPanel extends LitElementBase {
                         </label>
 
                         <input
+                          placeholder="Google name (preferred)"
+                          .value=${draft.name}
+                          @input=${(ev) =>
+                            this._setDraft(entity, {
+                              name: ev.target.value,
+                            })}
+                        />
+
+                        <input
                           placeholder="aliases: comma,separated"
                           .value=${draft.aliases.join(", ")}
                           @input=${(ev) =>
@@ -373,11 +390,11 @@ class GoogleAssistantManagerPanel extends LitElementBase {
                         />
 
                         <input
-                          placeholder="Optional Google name"
-                          .value=${draft.name}
+                          placeholder="Room (optional)"
+                          .value=${draft.room}
                           @input=${(ev) =>
                             this._setDraft(entity, {
-                              name: ev.target.value,
+                              room: ev.target.value,
                             })}
                         />
                       </div>

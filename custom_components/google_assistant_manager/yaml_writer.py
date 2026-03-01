@@ -28,6 +28,8 @@ async def write_config(hass: HomeAssistant, store_data: dict[str, Any]) -> None:
             entry["expose"] = False
         if cfg.get("name"):
             entry["name"] = cfg["name"]
+        if cfg.get("room"):
+            entry["room"] = cfg["room"]
         aliases = cfg.get("aliases")
         if aliases:
             entry["aliases"] = aliases

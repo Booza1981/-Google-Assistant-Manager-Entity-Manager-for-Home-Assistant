@@ -52,6 +52,7 @@ class GAMStore:
             "expose": cfg.get("expose", DEFAULT_ENTITY_CONFIG["expose"]),
             "aliases": list(cfg.get("aliases", DEFAULT_ENTITY_CONFIG["aliases"])),
             "name": cfg.get("name", DEFAULT_ENTITY_CONFIG["name"]),
+            "room": cfg.get("room", DEFAULT_ENTITY_CONFIG["room"]),
         }
 
     async def async_update_entity(
@@ -60,6 +61,7 @@ class GAMStore:
         expose: bool | None = None,
         aliases: list[str] | None = None,
         name: str | None | object = _UNSET,
+        room: str | None | object = _UNSET,
     ) -> dict[str, Any]:
         """Partially update one entity and persist."""
         current = await self.async_get_entity(entity_id)
@@ -70,6 +72,8 @@ class GAMStore:
             current["aliases"] = aliases
         if name is not _UNSET:
             current["name"] = name
+        if room is not _UNSET:
+            current["room"] = room
 
         self._data["entities"][entity_id] = current
         await self._store.async_save(self._data)

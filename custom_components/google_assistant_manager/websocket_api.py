@@ -46,6 +46,7 @@ async def ws_get_entities(
                 "expose": stored_cfg.get("expose", DEFAULT_ENTITY_CONFIG["expose"]),
                 "aliases": stored_cfg.get("aliases", DEFAULT_ENTITY_CONFIG["aliases"]),
                 "name": stored_cfg.get("name", DEFAULT_ENTITY_CONFIG["name"]),
+                "room": stored_cfg.get("room", DEFAULT_ENTITY_CONFIG["room"]),
             }
         )
 
@@ -60,6 +61,7 @@ async def ws_get_entities(
         vol.Optional("expose"): bool,
         vol.Optional("aliases"): [str],
         vol.Optional("name"): vol.Any(str, None),
+        vol.Optional("room"): vol.Any(str, None),
         vol.Optional("reload", default=True): bool,
     }
 )
@@ -77,6 +79,8 @@ async def ws_update_entity(
     }
     if "name" in msg:
         update_kwargs["name"] = msg["name"]
+    if "room" in msg:
+        update_kwargs["room"] = msg["room"]
 
     await store.async_update_entity(**update_kwargs)
 

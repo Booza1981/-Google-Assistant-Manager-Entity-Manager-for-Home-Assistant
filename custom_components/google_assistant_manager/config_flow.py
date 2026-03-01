@@ -117,6 +117,7 @@ def _normalize_entity_config(raw: dict[str, Any]) -> dict[str, dict[str, Any]]:
             "expose": cfg.get("expose", True),
             "aliases": [alias for alias in aliases if isinstance(alias, str) and alias],
             "name": cfg.get("name") if isinstance(cfg.get("name"), str) else None,
+            "room": cfg.get("room") if isinstance(cfg.get("room"), str) else None,
         }
 
     return normalized
