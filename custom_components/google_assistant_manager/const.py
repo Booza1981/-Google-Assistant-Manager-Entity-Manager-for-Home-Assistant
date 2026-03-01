@@ -24,19 +24,54 @@ CONFIG_SNIPPET = """google_assistant:
 
 SUPPORTED_DOMAINS = {
     "alarm_control_panel",
+    "binary_sensor",
+    "button",
     "camera",
     "climate",
     "cover",
+    "event",
     "fan",
     "group",
     "humidifier",
     "input_boolean",
+    "input_button",
+    "input_select",
+    "lawn_mower",
     "light",
     "lock",
     "media_player",
     "scene",
     "script",
+    "select",
     "sensor",
     "switch",
     "vacuum",
+    "valve",
+    "water_heater",
+}
+
+SUPPORTED_SENSOR_DEVICE_CLASSES = {
+    "aqi",
+    "carbon_dioxide",
+    "carbon_monoxide",
+    "humidity",
+    "pm10",
+    "pm25",
+    "temperature",
+    "volatile_organic_compounds",
+}
+
+SUPPORTED_BINARY_SENSOR_DEVICE_CLASSES = {
+    "carbon_monoxide",
+    "door",
+    "garage_door",
+    "lock",
+    "moisture",
+    "opening",
+    "smoke",
+    "window",
+}
+
+SUPPORTED_EVENT_DEVICE_CLASSES = {
+    "doorbell",
 }

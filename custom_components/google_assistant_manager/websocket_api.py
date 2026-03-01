@@ -6,11 +6,24 @@ from typing import Any
 
 import voluptuous as vol
 from homeassistant.components import websocket_api
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, State
 
-from .const import CONFIG_SNIPPET, DEFAULT_ENTITY_CONFIG, DOMAIN, SUPPORTED_DOMAINS
+from .const import (
+    CONFIG_SNIPPET,
+    DEFAULT_ENTITY_CONFIG,
+    DOMAIN,
+    SUPPORTED_BINARY_SENSOR_DEVICE_CLASSES,
+    SUPPORTED_DOMAINS,
+    SUPPORTED_EVENT_DEVICE_CLASSES,
+    SUPPORTED_SENSOR_DEVICE_CLASSES,
+)
 from .store import GAMStore
 from .yaml_writer import write_config
+
+try:
+    from homeassistant.components.cloud.const import CLOUD_NEVER_EXPOSED_ENTITIES
+except (ImportError, AttributeError):
+    CLOUD_NEVER_EXPOSED_ENTITIES = set()
 
 
 def _get_store(hass: HomeAssistant) -> GAMStore:
@@ -19,6 +32,26 @@ def _get_store(hass: HomeAssistant) -> GAMStore:
         raise ValueError("Google Assistant Manager is not set up")
     first_entry = next(iter(domain_data.values()))
     return first_entry["store"]
+
+
+def _is_google_supported_state(state: State) -> bool:
+    """Return True if the entity state is supported by Google Assistant."""
+    if state.entity_id in CLOUD_NEVER_EXPOSED_ENTITIES:
+        return False
+
+    domain = state.domain
+    if domain not in SUPPORTED_DOMAINS:
+        return False
+
+    device_class = state.attributes.get("device_class")
+    if domain == "sensor":
+        return device_class in SUPPORTED_SENSOR_DEVICE_CLASSES
+    if domain == "binary_sensor":
+        return device_class in SUPPORTED_BINARY_SENSOR_DEVICE_CLASSES
+    if domain == "event":
+        return device_class in SUPPORTED_EVENT_DEVICE_CLASSES
+
+    return True
 
 
 @websocket_api.websocket_command({"type": "google_assistant_manager/get_entities"})
@@ -32,9 +65,9 @@ async def ws_get_entities(
 
     entities = []
     for state in hass.states.async_all():
-        domain = state.domain
-        if domain not in SUPPORTED_DOMAINS:
+        if not _is_google_supported_state(state):
             continue
+        domain = state.domain
 
         stored_cfg = store_data.get(state.entity_id, {})
         friendly_name = state.attributes.get("friendly_name", state.name)
