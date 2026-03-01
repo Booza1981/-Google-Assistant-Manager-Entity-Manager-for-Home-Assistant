@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Google Assistant Manager",
+        "description": "Add this snippet to your `configuration.yaml` one time before using this integration:\n\n```yaml\n{snippet}```"
+      },
+      "import_existing": {
+        "title": "Import Existing Configuration",
+        "description": "Existing Google Assistant entity configuration was found. Import it into Google Assistant Manager?",
+        "data": {
+          "import_existing": "Import existing configuration"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Only one instance is allowed."
+    }
+  }
+}

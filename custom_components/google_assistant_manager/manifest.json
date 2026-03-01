@@ -1,0 +1,13 @@
+{
+  "domain": "google_assistant_manager",
+  "name": "Google Assistant Manager",
+  "version": "1.0.0",
+  "documentation": "https://github.com/YOUR_USERNAME/google-assistant-manager",
+  "issue_tracker": "https://github.com/YOUR_USERNAME/google-assistant-manager/issues",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": ["@YOUR_USERNAME"],
+  "iot_class": "calculated",
+  "config_flow": true,
+  "homeassistant": "2023.4.0"
+}
