@@ -70,10 +70,29 @@ class GoogleAssistantManagerPanel extends LitElementBase {
       }
       .entity-link {
         color: var(--primary-color);
-        text-decoration: none;
+        text-decoration: underline;
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        font: inherit;
       }
       .entity-link:hover {
-        text-decoration: underline;
+        opacity: 0.85;
+      }
+      .entity-meta {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .entity-id {
+        color: var(--secondary-text-color);
+      }
+      .entity-actions {
+        color: var(--primary-color);
+        text-decoration: none;
       }
       .banner {
         background: var(--warning-color);
@@ -252,6 +271,20 @@ class GoogleAssistantManagerPanel extends LitElementBase {
     this._collapsedDomains = next;
   }
 
+  _showMoreInfo(entityId) {
+    this.dispatchEvent(
+      new CustomEvent("hass-more-info", {
+        detail: { entityId },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  _entityEditUrl(entityId) {
+    return `/config/entities/entity/${encodeURIComponent(entityId)}`;
+  }
+
   async _save() {
     this._saving = true;
     this._error = null;
@@ -361,20 +394,19 @@ class GoogleAssistantManagerPanel extends LitElementBase {
                         <div>
                           <div>
                             <strong>
-                              <a
+                              <button
                                 class="entity-link"
-                                href=${`/config/entities/entity/${entity.entity_id}`}
+                                type="button"
+                                @click=${() => this._showMoreInfo(entity.entity_id)}
                               >
                                 ${entity.friendly_name || entity.entity_id}
-                              </a>
+                              </button>
                             </strong>
                           </div>
-                          <div class="muted">
-                            <a
-                              class="entity-link"
-                              href=${`/config/entities/entity/${entity.entity_id}`}
-                            >
-                              ${entity.entity_id}
+                          <div class="entity-meta">
+                            <span class="entity-id">${entity.entity_id}</span>
+                            <a class="entity-actions" href=${this._entityEditUrl(entity.entity_id)}>
+                              Edit
                             </a>
                           </div>
                         </div>
