@@ -68,6 +68,13 @@ class GoogleAssistantManagerPanel extends LitElementBase {
       .muted {
         color: var(--secondary-text-color);
       }
+      .entity-link {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+      .entity-link:hover {
+        text-decoration: underline;
+      }
       .banner {
         background: var(--warning-color);
         color: var(--text-primary-color);
@@ -352,8 +359,24 @@ class GoogleAssistantManagerPanel extends LitElementBase {
                     return html`
                       <div class="row">
                         <div>
-                          <div><strong>${entity.friendly_name || entity.entity_id}</strong></div>
-                          <div class="muted">${entity.entity_id}</div>
+                          <div>
+                            <strong>
+                              <a
+                                class="entity-link"
+                                href=${`/config/entities/entity/${entity.entity_id}`}
+                              >
+                                ${entity.friendly_name || entity.entity_id}
+                              </a>
+                            </strong>
+                          </div>
+                          <div class="muted">
+                            <a
+                              class="entity-link"
+                              href=${`/config/entities/entity/${entity.entity_id}`}
+                            >
+                              ${entity.entity_id}
+                            </a>
+                          </div>
                         </div>
 
                         <label>
