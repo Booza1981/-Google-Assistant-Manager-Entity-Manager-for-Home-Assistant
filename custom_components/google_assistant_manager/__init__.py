@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.components.panel_custom import async_register_panel
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -25,11 +26,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {"store": store}
 
-    hass.http.register_static_path(
-        f"/{DOMAIN}/frontend/{PANEL_JS_FILENAME}",
-        hass.config.path(f"custom_components/{DOMAIN}/frontend/{PANEL_JS_FILENAME}"),
-        cache_headers=False,
-    )
+    static_url = f"/{DOMAIN}/frontend/{PANEL_JS_FILENAME}"
+    static_path = hass.config.path(f"custom_components/{DOMAIN}/frontend/{PANEL_JS_FILENAME}")
+    if hasattr(hass.http, "async_register_static_paths"):
+        await hass.http.async_register_static_paths(
+            [StaticPathConfig(static_url, static_path, cache_headers=False)]
+        )
+    else:
+        hass.http.register_static_path(static_url, static_path, cache_headers=False)
 
     async_register_panel(
         hass,
