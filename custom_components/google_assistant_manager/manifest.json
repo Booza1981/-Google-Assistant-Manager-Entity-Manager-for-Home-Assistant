@@ -1,7 +1,7 @@
 {
   "domain": "google_assistant_manager",
   "name": "Google Assistant Manager",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "documentation": "https://github.com/YOUR_USERNAME/google-assistant-manager",
   "issue_tracker": "https://github.com/YOUR_USERNAME/google-assistant-manager/issues",
   "requirements": [],

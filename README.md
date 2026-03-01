@@ -2,10 +2,15 @@
 
 Home Assistant custom integration to manage which entities are exposed to Google Home when using the manual `google_assistant` integration.
 
+This project is only for the manual Google Assistant setup documented by Home Assistant:
+https://www.home-assistant.io/integrations/google_assistant/
+
+It is not for Home Assistant Cloud (Nabu Casa) exposure.
+
 ## Prerequisites
 
 - Home Assistant `2023.4.0` or newer
-- Manual `google_assistant` setup already working (not Nabu Casa cloud exposure)
+- Manual `google_assistant` setup already working
 
 ## Install
 
@@ -30,13 +35,25 @@ After that, this integration owns and auto-generates `google_assistant_entity_co
 
 - Sidebar panel: **Google Assistant**
 - Search/filter by entity name and domain
-- Per-entity expose toggle, aliases, and optional override name
+- Collapsible domain sections (`Collapse`, `Expand`, `Collapse all`, `Expand all`)
+- Per-entity expose toggle, Google `name`, aliases, and optional `room`
 - Per-domain `All` / `None` expose shortcuts
+- Clickable entity name and entity ID links to Home Assistant entity details
 - Save writes the generated YAML and then calls `homeassistant.reload_all`
 
 ## Reload note
 
 `homeassistant.reload_all` reloads all YAML-based integrations (not only Google Assistant). This avoids requiring a full Home Assistant restart and is typically fast.
+
+## HACS updates and versioning
+
+To get proper HACS update notifications (instead of pressing `Redownload`):
+
+1. Bump `version` in `custom_components/google_assistant_manager/manifest.json`.
+2. Create a Git tag that exactly matches that version with a `v` prefix (example: `v1.1.0`).
+3. Publish a GitHub Release for that tag.
+
+HACS checks releases/tags and will show an update when a newer tagged release is available.
 
 ## Scope limits
 
