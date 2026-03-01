@@ -31,7 +31,8 @@ def _unknown_tag(loader: _LenientSafeLoader, tag_suffix: str, node: yaml.Node) -
 _LenientSafeLoader.add_multi_constructor("!", _unknown_tag)
 
 
-class GoogleAssistantManagerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+@config_entries.HANDLERS.register(DOMAIN)
+class ConfigFlow(config_entries.ConfigFlow):
     """Handle a config flow for Google Assistant Manager."""
 
     VERSION = 1
